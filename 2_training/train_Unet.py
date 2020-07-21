@@ -123,7 +123,8 @@ def train_unet():
 		model.load_weights( OUT_WEIGHT )
 		print ("Done." )
 
-	multi_model = multi_gpu_model ( model, gpus = gpu_count )
+	#multi_model = multi_gpu_model ( model, gpus = gpu_count )
+	multi_model = model
 	multi_model.compile(loss=dice_coef_loss, optimizer=Adam(lr=0.01), metrics=[dice_coef])
 
 	print ( "Data splitting..." )
@@ -151,9 +152,16 @@ def train_unet():
 
 if __name__ == '__main__':
 
-	config = tf.ConfigProto(allow_soft_placement=True)
-	config.gpu_options.allow_growth = True
-	session = tf.Session(config=config)
-	K.set_session(session)	
+#	config = tf.ConfigProto(allow_soft_placement=True)
+#	config.gpu_options.allow_growth = True
+#	session = tf.Session(config=config)
+#	K.set_session(session)	
+	physical_devices = tf.config.experimental.list_physical_devices('GPU')
+	if len(physical_devices) > 0:
+		for k in range(len(physical_devices)):
+			tf.config.experimental.set_memory_growth(physical_devices[k], True)
+			print('memory growth:', tf.config.experimental.get_memory_growth(physical_devices[k]))
+	else:
+		print("Not enough GPU hardware devices available")
 	
 	train_unet()
