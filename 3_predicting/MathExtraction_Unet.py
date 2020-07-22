@@ -14,7 +14,7 @@ from skimage.morphology import dilation, disk
 
 from unet_param import UNet
 
-# python3 main_param.py [input image] [output image] [win_size] [layer_num] [input_weight_file]
+# python3 MathExtraction_Unet.py [input image] [output image] [win_size] [layer_num] [input_weight_file]
 
 argv = sys.argv
 
@@ -158,10 +158,11 @@ if __name__ == '__main__':
 	InputFile = args[1]
 	OutputFile = args[2]
 
-	config = tf.ConfigProto(allow_soft_placement=True)
-	config.gpu_options.allow_growth = True
-	session = tf.Session(config=config)
-	K.set_session(session)	
+	# config = tf.ConfigProto(allow_soft_placement=True)
+	# config.gpu_options.allow_growth = True
+	# session = tf.Session(config=config)
+	# K.set_session(session)	
+
 	
 	pred_img = predict( InputFile, OutputFile )
 
